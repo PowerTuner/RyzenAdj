@@ -48,7 +48,7 @@ int init_mem_obj_mem([[maybe_unused]] os_access_obj_t *os_access, const uintptr_
 
 	// It is too complicated to check PAT, CONFIG_NONPROMISC_DEVMEM, CONFIG_STRICT_DEVMEM or other dependencies, just try to open /dev/mem
 	if (dev_mem_fd > 0) {
-		phy_map = mmap(NULL, 0x1000, PROT_READ, MAP_SHARED, dev_mem_fd, (long)physAddr);
+		phy_map = mmap(NULL, MAX_TABLE_SIZE, PROT_READ, MAP_SHARED, dev_mem_fd, (long)physAddr);
 		close(dev_mem_fd);
 	}
 
@@ -66,7 +66,7 @@ void free_os_access_obj_mem(os_access_obj_t *obj) {
 		pci_cleanup(obj->access.mem.pci_acc);
 
 	if (phy_map != MAP_FAILED) {
-		munmap(phy_map, 0x1000);
+		munmap(phy_map, MAX_TABLE_SIZE);
 		phy_map = MAP_FAILED;
 	}
 

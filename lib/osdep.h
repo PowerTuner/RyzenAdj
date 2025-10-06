@@ -16,6 +16,7 @@
 #define DBG(...)
 #endif
 
+#define MAX_TABLE_SIZE                  0x2000
 #define NB_PCI_REG_ADDR_ADDR			0xB8
 #define NB_PCI_REG_DATA_ADDR			0xBC
 

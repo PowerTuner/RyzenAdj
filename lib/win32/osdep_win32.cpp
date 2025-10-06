@@ -103,7 +103,7 @@ int init_mem_obj(os_access_obj_t *os_access, uintptr_t physAddr) {
         return -1;
     }
 
-    pdwLinAddr = (uint32_t*)gfpMapPhysToLin(physAddr, 0x1000, &physicalMemoryHandle);
+    pdwLinAddr = (uint32_t*)gfpMapPhysToLin(physAddr, MAX_TABLE_SIZE, &physicalMemoryHandle);
     if (pdwLinAddr == NULL) {
         DBG("failed to map memory\n");
         return -1;

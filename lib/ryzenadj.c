@@ -188,7 +188,7 @@ static ADJ_ERROR request_table_ver_and_size() {
         case 0x650005: ry->table_size = 0xB78; break;
 
         // use a larger size then the largest known table to be able to test real table size of unknown tables
-        default: ry->table_size = 0x1050; break;
+        default: ry->table_size = MAX_TABLE_SIZE; break;
     }
 
     return ADJ_OK;
