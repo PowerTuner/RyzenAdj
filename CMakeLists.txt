@@ -1,47 +1,49 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.23)
 
-project(ryzenadj)
-
-string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+project(ryzenadj VERSION 0.18 DESCRIPTION "RyzenAdj library - PowerTuner fork" HOMEPAGE_URL "https://github.com/PowerTuner/RyzenAdj" LANGUAGES C CXX)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
-include(CheckIPOSupported)
-check_ipo_supported(RESULT has_ipo OUTPUT error)
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+set(PROJECT_AUTHOR "PowerTuner fork: kylon, Original dev: FlyGoat")
+set(LINK_LIBS "")
 
 set(PROJECT_SOURCES
-    lib/osdep.h
-    lib/smu_access.h
-    lib/smu_access.c
-    lib/ryzen_opts.h
-    lib/ryzen_opts.c
-    lib/ryzenadj.c
+    libryzenadj/osdep.h
+    libryzenadj/smu_access.h
+    libryzenadj/smu_access.c
+    libryzenadj/ryzen_opts.h
+    libryzenadj/ryzen_opts.c
+    libryzenadj/ryzenadj.c
 )
 
 set(PUB_HEADERS
-    lib/ryzenadj.h
+    libryzenadj/ryzenadj.h
 )
 
 if (WIN32)
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED True)
-    set(LINK_LIBS WinRing0x64)
+    configure_file(win32/win.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/win.rc)
 
-    list(APPEND PROJECT_SOURCES
-        lib/win32/osdep_win32.cpp
+    list(APPEND LINK_LIBS
+        WinRing0x64
     )
 
+    list(APPEND PROJECT_SOURCES
+        libryzenadj/win32/osdep_win32.cpp
+        win.rc
+    )
 elseif (LINUX)
-    set(LINK_LIBS pci)
-
-    list(APPEND PROJECT_SOURCES
-        lib/linux/osdep_linux_mem.h
-        lib/linux/osdep_linux_mem.c
-        lib/linux/osdep_linux_smu_kernel_module.h
-        lib/linux/osdep_linux_smu_kernel_module.c
-        lib/linux/osdep_linux.c
+    list(APPEND LINK_LIBS
+        pci
     )
 
+    list(APPEND PROJECT_SOURCES
+        libryzenadj/linux/osdep_linux_mem.h
+        libryzenadj/linux/osdep_linux_mem.c
+        libryzenadj/linux/osdep_linux_smu_kernel_module.h
+        libryzenadj/linux/osdep_linux_smu_kernel_module.c
+        libryzenadj/linux/osdep_linux.c
+    )
 else ()
     message(FATAL_ERROR "!Unsupported OS!")
 endif ()
@@ -54,6 +56,8 @@ if (build_type MATCHES debug)
     target_compile_definitions(${PROJECT_NAME} PRIVATE RYZENADJ_DEBUG)
 endif ()
 
+include(CheckIPOSupported)
+check_ipo_supported(RESULT has_ipo OUTPUT error)
 if (has_ipo)
     message(STATUS "${PROJECT_NAME}: IPO / LTO enabled")
     set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
@@ -66,6 +70,7 @@ endif ()
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC LIBRYZENADJ_EXPORT)
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_sources(${PROJECT_NAME} PUBLIC
     FILE_SET rylib_headers
