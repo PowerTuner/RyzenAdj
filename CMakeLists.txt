@@ -69,7 +69,7 @@ if (WIN32)
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC LIBRYZENADJ_EXPORT)
-target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LINK_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_sources(${PROJECT_NAME} PUBLIC
