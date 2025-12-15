@@ -73,6 +73,8 @@ git clone -b dev https://github.com/CkNoSFeRaTU/ryzen_smu
 cd ryzen_smu/ && sudo make dkms-install
 ```
 
+Alternatively, for ArchLinux, a PKGBUILD is provided [here](https://github.com/PowerTuner/RyzenAdj/tree/main/linux/ryzen_sm-dkms-arch).
+
 ### Windows
 
 Install latest [visual studio IDE community edition](https://visualstudio.microsoft.com/it/) and select **Desktop development in C++** in the installer.
