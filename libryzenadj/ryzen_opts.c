@@ -392,8 +392,6 @@ static void setStrixhaloOpts(ryzen_adj_opt_t *optList) {
 	optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x1f;
 	optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x23;
 	optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
-	optList[ADJ_OPT_COPER].opt = 0x4b;
-	optList[ADJ_OPT_COALL].opt = 0x4c;
     optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 }
 
