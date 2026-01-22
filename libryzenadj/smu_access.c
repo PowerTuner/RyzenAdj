@@ -25,7 +25,7 @@ static int smu_service_test(const smu_access_t *smu) {
 	/* Send message ID (all the SMU have the same TestMessage as of now, correct me if they don't) */
 	smn_reg_write(smu->os_access, smu->msg, 0x1);
 
-	/* Wait until reponse changed */
+	/* Wait until response changed */
 	while (response == 0)
 		response = smn_reg_read(smu->os_access, smu->rep);
 
@@ -150,7 +150,7 @@ smu_access_t *get_smu(os_access_obj_t *obj, const SMU_TYPE type, const RYZEN_FAM
 	if (smu_service_test(smu))
 		return smu;
 
-	DBG("Faild to get SMU, SMU_TYPE: %i\n", type);
+	DBG("Failed to get SMU, SMU_TYPE: %i\n", type);
 
 err:
 	free(smu);
@@ -178,7 +178,7 @@ ADJ_ERROR smu_service_req(smu_access_t *smu, const uint32_t id , smu_service_arg
 	/* Send message ID */
 	smn_reg_write(smu->os_access, smu->msg, id);
 
-	/* Wait until reponse changed */
+	/* Wait until response changed */
 	while(response == 0x0)
 		response = smn_reg_read(smu->os_access, smu->rep);
 
